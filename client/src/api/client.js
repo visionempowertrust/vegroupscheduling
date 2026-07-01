@@ -46,3 +46,8 @@ export async function updateFeedbackEntry(id, updates) {
 export function audioUrl(id) {
   return `${BASE_URL}/feedback/${id}/audio`;
 }
+
+export async function testSarvamConnection() {
+  const res = await fetch(`${BASE_URL}/feedback/test-connection`, { method: 'POST' });
+  return res.json();
+}

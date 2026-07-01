@@ -58,6 +58,10 @@ Open `http://localhost:5173`. Vite proxies `/api` requests to the backend.
 3. **Review tab** — office staff can filter by language or review status,
    play back the original recording, read the transcript, and mark entries
    reviewed.
+4. **Test Sarvam connection tab** — sends a short silent test clip to Sarvam
+   using the server's configured `SARVAM_API_KEY`, so you can confirm the
+   key and network access are working before rolling this out to field
+   workers, without needing a microphone or real speech.
 
 If transcription fails (bad network, invalid key, unsupported audio) the
 recording is still saved with `transcription_status: "failed"` and the error
@@ -70,6 +74,7 @@ manually later.
 | ------ | ------------------------- | ----------------------------------------- |
 | GET    | `/api/health`             | Health check                              |
 | GET    | `/api/feedback/languages` | Supported language codes                  |
+| POST   | `/api/feedback/test-connection` | Verify the Sarvam API key/connectivity using a silent test clip |
 | GET    | `/api/feedback`           | List feedback (filters: `language_code`, `review_status`, `from`, `to`) |
 | POST   | `/api/feedback`           | Submit a recording (`multipart/form-data`: `audio`, `submitter_name`, `site_name`, `language_code`) |
 | GET    | `/api/feedback/:id`       | Get one entry                             |

@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { transcribeAudio } from './sarvam.js';
+import { transcribeAudio, testSarvamConnection } from './sarvam.js';
 
 describe('transcribeAudio', () => {
   let tmpFile;
@@ -49,5 +49,47 @@ describe('transcribeAudio', () => {
     }));
 
     await expect(transcribeAudio(tmpFile, 'audio/webm', 'hi-IN')).rejects.toThrow(/401/);
+  });
+});
+
+describe('testSarvamConnection', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    delete process.env.SARVAM_API_KEY;
+  });
+
+  it('reports not-ok when SARVAM_API_KEY is missing, without throwing', async () => {
+    delete process.env.SARVAM_API_KEY;
+    const result = await testSarvamConnection();
+    expect(result).toEqual({ ok: false, message: expect.stringMatching(/SARVAM_API_KEY/) });
+  });
+
+  it('reports ok when Sarvam accepts the test clip', async () => {
+    process.env.SARVAM_API_KEY = 'test-key';
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ transcript: '', language_code: 'unknown' }),
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    const result = await testSarvamConnection();
+
+    expect(result.ok).toBe(true);
+    const [, options] = fetchMock.mock.calls[0];
+    expect(options.headers['api-subscription-key']).toBe('test-key');
+  });
+
+  it('reports not-ok with the error message when Sarvam rejects the request', async () => {
+    process.env.SARVAM_API_KEY = 'bad-key';
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: false,
+      status: 403,
+      text: async () => 'invalid subscription key',
+    }));
+
+    const result = await testSarvamConnection();
+
+    expect(result.ok).toBe(false);
+    expect(result.message).toMatch(/403/);
   });
 });

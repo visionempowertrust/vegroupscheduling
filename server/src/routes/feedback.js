@@ -3,12 +3,17 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { upload, UPLOAD_DIR_PATH } from '../middleware/upload.js';
 import { db, insertFeedback, listFeedback, getFeedbackById, updateFeedback } from '../db/index.js';
-import { transcribeAudio, SUPPORTED_LANGUAGES } from '../services/sarvam.js';
+import { transcribeAudio, testSarvamConnection, SUPPORTED_LANGUAGES } from '../services/sarvam.js';
 
 export const router = express.Router();
 
 router.get('/languages', (req, res) => {
   res.json(SUPPORTED_LANGUAGES);
+});
+
+router.post('/test-connection', async (req, res) => {
+  const result = await testSarvamConnection();
+  res.status(result.ok ? 200 : 502).json(result);
 });
 
 router.get('/', (req, res) => {
