@@ -81,6 +81,49 @@ manually later.
 | GET    | `/api/feedback/:id/audio` | Stream the audio file                     |
 | PATCH  | `/api/feedback/:id`       | Update `review_status` / `admin_notes`    |
 
+## Deploying
+
+GitHub Pages only serves static files, so it can host the **frontend only**.
+The backend (Express API + SQLite + your Sarvam API key) must run on a host
+that can execute Node — the key must never be shipped to the browser.
+
+### 1. Deploy the backend
+
+Deploy the `server/` folder to any Node host (e.g. [Render](https://render.com),
+[Railway](https://railway.app), [Fly.io](https://fly.io), or your own VPS).
+On Render, for example:
+
+1. New "Web Service" → connect this repo → root directory `server`
+2. Build command: `npm install`  ·  Start command: `npm start`
+3. Add environment variables from `server/.env.example` (at minimum
+   `SARVAM_API_KEY`, and `CLIENT_ORIGIN` set to your GitHub Pages URL, e.g.
+   `https://visionempowertrust.github.io`)
+4. Deploy, then note the resulting URL, e.g. `https://your-backend.onrender.com`
+
+The SQLite DB and `uploads/` directory are written to local disk — use a host
+with a persistent disk/volume, or swap in an external database/object storage
+for production use.
+
+### 2. Deploy the frontend to GitHub Pages
+
+This repo includes `.github/workflows/deploy-pages.yml`, which builds
+`client/` and publishes it to GitHub Pages on every push to `main` (and
+currently also this feature branch).
+
+One-time setup:
+
+1. In the repo, go to **Settings → Pages** and set **Source** to
+   "GitHub Actions".
+2. Go to **Settings → Secrets and variables → Actions → Variables** and add
+   a repository variable `VITE_API_BASE_URL` set to your deployed backend's
+   API URL, e.g. `https://your-backend.onrender.com/api`.
+3. Push to `main` (or run the workflow manually from the Actions tab) — the
+   site will publish at `https://visionempowertrust.github.io/vegroupscheduling/`.
+
+If `VITE_API_BASE_URL` isn't set, the built frontend will try to call `/api`
+on the Pages domain itself, which doesn't exist — you'll see failed
+requests in the browser console until it's configured.
+
 ## Tests
 
 ```bash

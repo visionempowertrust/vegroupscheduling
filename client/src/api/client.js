@@ -1,4 +1,8 @@
-const BASE_URL = '/api';
+// In local dev, Vite proxies '/api' to the backend (see vite.config.js).
+// In a static deployment (e.g. GitHub Pages) there is no proxy, so the full
+// backend URL must be supplied at build time via VITE_API_BASE_URL.
+const API_ROOT = import.meta.env.VITE_API_BASE_URL || '/api';
+const BASE_URL = API_ROOT.replace(/\/$/, '');
 
 export async function fetchLanguages() {
   const res = await fetch(`${BASE_URL}/feedback/languages`);
