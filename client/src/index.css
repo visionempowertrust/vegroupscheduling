@@ -1,0 +1,169 @@
+:root {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f4f6f8;
+  color: #1a1a1a;
+}
+
+.app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  background: #e0e4e9;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.tabs button.active {
+  background: #2a6df4;
+  color: white;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  font-size: 0.9rem;
+}
+
+input[type="text"], select, textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccd2d9;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.record-btn {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
+  background: #d92c2c;
+}
+
+.record-btn.recording {
+  background: #7d1010;
+}
+
+.record-btn:disabled {
+  background: #aab1ba;
+  cursor: not-allowed;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 0.85rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
+  background: #17903f;
+  margin-top: 0.75rem;
+}
+
+.submit-btn:disabled {
+  background: #aab1ba;
+  cursor: not-allowed;
+}
+
+.status-msg {
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.status-msg.error {
+  color: #b3261e;
+}
+
+.status-msg.success {
+  color: #17903f;
+}
+
+.filters {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.filters select {
+  margin-bottom: 0;
+}
+
+.feedback-entry .meta {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.feedback-entry .transcript {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  white-space: pre-wrap;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge.new { background: #e8f0fe; color: #2a6df4; }
+.badge.reviewed { background: #e6f6ea; color: #17903f; }
+.badge.failed { background: #fdeaea; color: #b3261e; }
+.badge.pending { background: #fff6e0; color: #a6720b; }
+
+audio {
+  width: 100%;
+  margin: 0.5rem 0;
+}
+
+.entry-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.entry-actions button {
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #ccd2d9;
+  background: white;
+  cursor: pointer;
+}
